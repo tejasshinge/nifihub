@@ -830,7 +830,7 @@
           "Max Batch Size": "1",
           "Connection Pooling Service": "ce22d3a0-f94b-3a61-ffff-ffff82c298f6",
           "Max Content Reference Size": "32 KB",
-          "SQL": "CREATE SCHEMA IF NOT EXISTS demo_postgres;\n\nCREATE TABLE IF NOT EXISTS demo_postgres.customers (\n    customer_id INTEGER PRIMARY KEY,\n    first_name VARCHAR(100) NOT NULL,\n    last_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(50),\n    updated_at TIMESTAMP DEFAULT NOW()\n);\n\nCREATE TABLE IF NOT EXISTS demo_postgres.orders (\n    order_id INTEGER PRIMARY KEY,\n    customer_id INTEGER NOT NULL,\n    order_status VARCHAR(50) DEFAULT 'pending',\n    total_amount NUMERIC(10,2),\n    shipping_address TEXT,\n    updated_at TIMESTAMP DEFAULT NOW()\n);\n\nCREATE TABLE IF NOT EXISTS demo_postgres.order_items (\n    item_id SERIAL PRIMARY KEY,\n    order_id INTEGER NOT NULL,\n    product_name VARCHAR(255) NOT NULL,\n    quantity INTEGER DEFAULT 1,\n    unit_price NUMERIC(10,2)\n);\n\nDO $$\nBEGIN\n    IF NOT EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'demo_publication') THEN\n        CREATE PUBLICATION demo_publication FOR TABLE\n            demo_postgres.customers,\n            demo_postgres.orders,\n            demo_postgres.order_items;\n    END IF;\nEND\n$$;"
+          "SQL": "CREATE SCHEMA IF NOT EXISTS #{Schema Name};\n\nCREATE TABLE IF NOT EXISTS #{Schema Name}.customers (\n    customer_id INTEGER PRIMARY KEY,\n    first_name VARCHAR(100) NOT NULL,\n    last_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(50),\n    updated_at TIMESTAMP DEFAULT NOW()\n);\n\nCREATE TABLE IF NOT EXISTS #{Schema Name}.orders (\n    order_id INTEGER PRIMARY KEY,\n    customer_id INTEGER NOT NULL,\n    order_status VARCHAR(50) DEFAULT 'pending',\n    total_amount NUMERIC(10,2),\n    shipping_address TEXT,\n    updated_at TIMESTAMP DEFAULT NOW()\n);\n\nCREATE TABLE IF NOT EXISTS #{Schema Name}.order_items (\n    item_id SERIAL PRIMARY KEY,\n    order_id INTEGER NOT NULL,\n    product_name VARCHAR(255) NOT NULL,\n    quantity INTEGER DEFAULT 1,\n    unit_price NUMERIC(10,2)\n);\n\nDO $$\nBEGIN\n    IF NOT EXISTS (SELECT 1 FROM pg_publication WHERE pubname = '#{Publication Name}') THEN\n        CREATE PUBLICATION #{Publication Name} FOR TABLE\n            #{Schema Name}.customers,\n            #{Schema Name}.orders,\n            #{Schema Name}.order_items;\n    END IF;\nEND\n$$;"
         },
         "propertyDescriptors": {
           "Max Batch Size": {
@@ -1616,7 +1616,6 @@
     "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
     "componentType": "PROCESS_GROUP"
   },
-  "externalControllerServices": {},
   "parameterContexts": {
     "CDC Postgres Demo - Data Generator": {
       "name": "CDC Postgres Demo - Data Generator",
@@ -1660,6 +1659,13 @@
           "sensitive": false,
           "provided": false,
           "value": "demo_postgres"
+        },
+        {
+          "name": "Publication Name",
+          "description": "Name of the PostgreSQL publication to create for CDC. Must match the publication name used by the CDC connector.",
+          "sensitive": false,
+          "provided": false,
+          "value": "demo_publication"
         }
       ],
       "description": "",

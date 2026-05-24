@@ -13,7 +13,9 @@ The flow automatically creates the required Postgres schema, tables, and publica
 | `Database Connection URL` | JDBC URL to the Postgres instance |
 | `Database Name` | Postgres database name |
 | `Database User` | Postgres username |
-| `Schema Name` | Schema for the generated tables |
+| `Database Password` | Postgres password (sensitive) |
+| `Schema Name` | Schema for the generated tables (used in CREATE SCHEMA, CREATE TABLE, and CREATE PUBLICATION) |
+| `Publication Name` | Name of the PostgreSQL publication created for CDC. Must match the publication name configured in the CDC connector. Default: `demo_publication` |
 | `Database Driver` | JDBC driver asset (postgresql-42.7.10.jar) |
 
 ## Deployment
