@@ -8,7 +8,7 @@ deployments:
   - name: NIFIHUB_DEMO_DEPLOYMENT
     deployment_type: SNOWFLAKE
     display_name: "NiFi Hub Demo Deployment"
-    comment: "Demo deployment for Postgres CDC"
+    comment: "Demo deployment for Postgres CDC pipeline"
     runtimes:
       - name: MY_POSTGRES_RUNTIME
         database: OPENFLOW
